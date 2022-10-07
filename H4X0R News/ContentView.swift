@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @ObservedObject var networkManager = NetworkManager()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            List(networkManager.posts) { posts in
+                HStack {
+                    Text(String(posts.points))
+                        .foregroundColor(Color(UIColor(red: 0.47, green: 0.27, blue: 0.89, alpha: 1.00)))
+                    Text(posts.title)
+                }
+            }
+            .navigationBarTitle("H4X0R NEWS")
+            .toolbarColorScheme(.light, for: .navigationBar)
+            .toolbarBackground(Color(UIColor(red: 0.54, green: 0.75, blue: 0.11, alpha: 1.00)), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
         }
-        .padding()
+        .onAppear {
+            self.networkManager.fetchData()
+        }
+        
     }
 }
 
